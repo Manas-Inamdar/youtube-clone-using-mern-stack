@@ -1,7 +1,7 @@
 import { useState , useEffect } from 'react';
 import React from 'react';
 import logo from '../assets/YouTube_Logo_2017.svg.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../store/slice/authSlice';
 import { useSelector } from 'react-redux';
@@ -11,7 +11,9 @@ function Navbar({ openChange }) {
   const [userdata, setUserData] = useState(null);
   // const [loader, setLoader] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     console.log("Sidebar toggle triggered");
@@ -42,6 +44,13 @@ function Navbar({ openChange }) {
     };
     fetchUser();
   }, [data]);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim() !== "") {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   return (
     // loader ?  
@@ -82,13 +91,12 @@ function Navbar({ openChange }) {
                 </svg>
               </button>
 
-              <a className="flex ml-14 md:mr-24" href="/">
+              <Link className="flex ml-14 md:mr-24" to="/">
                 <img src={logo} className="mr-2.5 h-6" alt="YouTube Logo" />
-              </a>
+              </Link>
 
               <form
-                action="#"
-                method="get"
+                onSubmit={handleSearchSubmit}
                 className="hidden lg:block lg:pl-3.5"
                 style={{ marginLeft: 300 }}
               >
@@ -117,6 +125,8 @@ function Navbar({ openChange }) {
                     id="topbar-search"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2.5"
                     placeholder="Search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
               </form>

@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import store from '../store/store.js';
 import App from '../App';
 import { Home, YourChannel, History, Playlist, Like, CustomizeChannel, Signup, Login, Settings, Shorts, Video, UploadVideo, AllVideo, AuthLayout , Main } from '../components';
+import Search from '../page/Search';
 
 function Routing() {
     return (
@@ -76,6 +77,7 @@ function Routing() {
                                 <Settings />
                             </AuthLayout>
                         } />
+                        <Route path='search' element={<Search />} />
                     </Route>
                     <Route path='/login' element={<Login />} />
                     <Route path='/signup' element={<Signup />} />

@@ -126,11 +126,26 @@ const viewsIncrement = asyncHandler(async(req , res)=>{
     return res.status(200).json(new ApiResponse(200, video, "Video Views Updated"));
 })
 
+// ********------------------search videos-------------------********
+
+const searchVideos = asyncHandler(async (req, res) => {
+    const q = req.query.q || "";
+    // Search in title or description (case-insensitive)
+    const videos = await Video.find({
+        $or: [
+            { title: { $regex: q, $options: "i" } },
+            { description: { $regex: q, $options: "i" } }
+        ]
+    });
+    res.status(200).json(new ApiResponse(200, videos, "Search results"));
+});
+
 export {
   publishAVideo,
   getAllVideos,
   getAllUserVideos,
   deleteVideoById,
   VideoDataById,
-  viewsIncrement
+  viewsIncrement,
+  searchVideos
 };

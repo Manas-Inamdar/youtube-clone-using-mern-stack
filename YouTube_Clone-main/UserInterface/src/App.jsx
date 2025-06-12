@@ -33,10 +33,14 @@ function App() {
               <Sidebar
                 hidden={isOpen}
               />
-                <div id="main-content" className={`relative w-full h-full overflow-y-auto bg-gray-50 ${isOpen ? "lg:ml-52" : "ml-0"} `}>
+                <div
+                  id="main-content"
+                  className={`relative w-full h-full overflow-y-auto bg-gray-50 ${isOpen ? "lg:ml-52" : "ml-0"} `}
+                  style={{ paddingTop: 32 }}
+                >
                     <main>
-                    {/* {{ Content }} */}
-                       <Outlet/>
+                        {/* {{ Content }} */}
+                        <Outlet/>
                     </main>
                     {/* {{ Footer }} */}
                 </div>
