@@ -3,7 +3,7 @@ import authReducer from './slice/authSlice';
 
 const loadState = () => {
   try {
-    const serializedState = localStorage.getItem('authState');
+    const serializedState = sessionStorage.getItem('authState');
     if (serializedState === null) return undefined;
     return { auth: JSON.parse(serializedState) };
   } catch (e) {
@@ -13,7 +13,7 @@ const loadState = () => {
 
 const saveState = (state) => {
   try {
-    localStorage.setItem('authState', JSON.stringify(state.auth));
+    sessionStorage.setItem('authState', JSON.stringify(state.auth));
   } catch (e) {}
 };
 
