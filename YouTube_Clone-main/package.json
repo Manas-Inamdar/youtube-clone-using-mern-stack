@@ -5,9 +5,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "frontend": "cd UserInterface && npm run dev",
-    "backend": "nodemon src/index.js",
-    "dev": "concurrently \"npm run frontend\" \"npm run backend\""
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "keywords": [
     "javascript",
