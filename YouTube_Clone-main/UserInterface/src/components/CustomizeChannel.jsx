@@ -21,7 +21,7 @@ function CustomizeChannel() {
       const fetchUser = async () => {
         try {
           setLoader(true);
-          const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/account/userData/${data._id}`);
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/account/userData/${data._id}`);
           const userData = response.data.data;
           setUserData(userData);
           setName(userData.name);
@@ -64,7 +64,7 @@ function CustomizeChannel() {
 
     try {
       setLoader(true);
-      const res = await axios.put(`${process.env.REACT_APP_API_URL}/api/v1/account/update/${userdata._id}`, formData, {
+      const res = await axios.put(`${import.meta.env.VITE_API_URL}/api/v1/account/update/${userdata._id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`

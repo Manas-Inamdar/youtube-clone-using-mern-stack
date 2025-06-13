@@ -16,7 +16,7 @@ function YourChannel() {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/v1/account/userData/${data._id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/account/userData/${data._id}`,
           {
             headers: { Authorization: `Bearer ${token}` }
           }

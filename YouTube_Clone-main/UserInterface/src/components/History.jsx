@@ -17,7 +17,7 @@ function History() {
 
     const fetchHistory = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/account/history`, {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/account/history`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setHistory(response.data.data);

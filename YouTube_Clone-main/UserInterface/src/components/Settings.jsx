@@ -28,7 +28,7 @@ function Settings() {
         try {
             setLoader(true)
             const res = await axios.delete(
-                `${process.env.REACT_APP_API_URL}/api/v1/account/delete/${userdata._id}`,
+                `${import.meta.env.VITE_API_URL}/api/v1/account/delete/${userdata._id}`,
                 {
                     headers: { Authorization: `Bearer ${token}` }
                 }

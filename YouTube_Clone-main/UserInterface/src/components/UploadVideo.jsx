@@ -50,7 +50,7 @@ function UploadVideo() {
         try {
             setLoader(true)
             const res = await axios.post(
-                `${process.env.REACT_APP_API_URL}/api/v1/videos/publish`,
+                `${import.meta.env.VITE_API_URL}/api/v1/videos/publish`,
                 formData,
                 {
                     headers: {

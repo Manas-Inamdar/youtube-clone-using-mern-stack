@@ -22,7 +22,7 @@ function Video() {
   useEffect(() => {
     const fetchVideoData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/videos/videoData/${id}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/videos/videoData/${id}`);
         setVideoData(response.data.data);
       } catch (error) {
         setError(error.message);
@@ -37,7 +37,7 @@ function Video() {
   useEffect(() => {
     const incrementViewCount = async () => {
       try {
-        await axios.put(`${process.env.REACT_APP_API_URL}/api/v1/videos/incrementView/${id}`);
+        await axios.put(`${import.meta.env.VITE_API_URL}/api/v1/videos/incrementView/${id}`);
         console.log('View count incremented');
       } catch (error) {
         console.error('Error incrementing view count:', error);
@@ -54,7 +54,7 @@ function Video() {
     const addToWatchHistory = async () => {
       try {
         await axios.put(
-          `${process.env.REACT_APP_API_URL}/api/v1/account/addToHistory/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/account/addToHistory/${id}`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -72,7 +72,7 @@ function Video() {
     const fetchUser = async () => {
       try {
         // No Authorization header needed for public route
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/account/userData/${videoData.owner}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/account/userData/${videoData.owner}`);
         setUserData(response.data.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -103,7 +103,7 @@ function Video() {
     }
     try {
       const res = await axios.put(
-        `${process.env.REACT_APP_API_URL}/api/v1/videos/like/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/v1/videos/like/${id}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -7,7 +7,7 @@ function Like() {
   useEffect(() => {
     const token = sessionStorage.getItem('token') || localStorage.getItem('token');
     if (!token) return;
-    axios.get('/api/v1/videos/liked', {
+    axios.get(`${import.meta.env.VITE_API_URL}/api/v1/videos/liked`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => setVideos(res.data.videos));
   }, []);

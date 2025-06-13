@@ -40,7 +40,7 @@ function Navbar({ openChange }) {
         if (!data?._id) return;
         const fetchUser = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/account/userData/${data._id}`);
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/account/userData/${data._id}`);
                 setUserData(response.data.data);
             } catch (error) {
                 console.error('Error fetching user data:', error);
