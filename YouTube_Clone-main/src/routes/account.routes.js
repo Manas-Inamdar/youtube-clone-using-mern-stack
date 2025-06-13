@@ -11,7 +11,7 @@ router.route("/logout").post(verifyJWT, logoutUser);
 router.route("/refreshtoken").post(refreshAccessToken);
 router.route("/delete/:id").delete(verifyJWT, deleteAccount);
 router.route("/update/:id").put(verifyJWT, upload.single("avatar"), updateAccount);
-router.route("/userData/:id").get(verifyJWT, getUserById);
+router.route("/userData/:id").get(getUserById);
 router.route("/history").get(verifyJWT, GetWatchHistory);
 router.route("/addToHistory/:id").put(verifyJWT, addToWatchHistory);
 

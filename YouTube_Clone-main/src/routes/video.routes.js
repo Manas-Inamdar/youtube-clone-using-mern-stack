@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { publishAVideo, getAllVideos, getAllUserVideos, deleteVideoById, VideoDataById, viewsIncrement, searchVideos } from "../controllers/video.controller.js";
+import { publishAVideo, getAllVideos, getAllUserVideos, deleteVideoById, VideoDataById, viewsIncrement, searchVideos, likeVideo, getLikedVideos } from "../controllers/video.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
@@ -20,5 +20,7 @@ router.put("/incrementView/:id", viewsIncrement); // <-- Now public
 router.post("/publish", verifyJWT, videoUpload, publishAVideo);
 router.get("/allUserVideo/:owner", verifyJWT, getAllUserVideos);
 router.delete("/delete/:id", verifyJWT, deleteVideoById);
+router.put("/like/:id", verifyJWT, likeVideo);
+router.get("/liked", verifyJWT, getLikedVideos);
 
 export default router;

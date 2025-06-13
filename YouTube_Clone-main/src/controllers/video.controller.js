@@ -140,6 +140,42 @@ const searchVideos = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, videos, "Search results"));
 });
 
+// ********------------------like and unlike video-------------------********
+
+const likeVideo = asyncHandler(async (req, res) => {
+  try {
+    const videoId = req.params.id;
+    const userId = req.user._id;
+
+    const video = await Video.findById(videoId);
+    if (!video) return res.status(404).json({ message: "Video not found" });
+
+    const alreadyLiked = video.likes.includes(userId);
+    if (alreadyLiked) {
+      video.likes.pull(userId);
+    } else {
+      video.likes.push(userId);
+    }
+    await video.save();
+
+    res.json({ likes: video.likes.length, liked: !alreadyLiked });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// ********------------------get liked videos-------------------********
+
+const getLikedVideos = asyncHandler(async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const likedVideos = await Video.find({ likes: userId });
+    res.json({ videos: likedVideos });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 export {
   publishAVideo,
   getAllVideos,
@@ -147,5 +183,7 @@ export {
   deleteVideoById,
   VideoDataById,
   viewsIncrement,
-  searchVideos
+  searchVideos,
+  likeVideo,
+  getLikedVideos
 };

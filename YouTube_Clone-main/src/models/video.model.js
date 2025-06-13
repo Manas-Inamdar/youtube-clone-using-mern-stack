@@ -32,8 +32,8 @@ const  videoSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "newUser",
             required: true
-        }
-
+        },
+        likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }]
     },
     {
         timestamps: true
