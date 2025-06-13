@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 // import image from "../assets/profile-picture-5.jpg";
 import { Link, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function Video() {
   const { id } = useParams();
@@ -9,6 +10,7 @@ function Video() {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
+  const authStatus = useSelector((state) => state.auth.status);
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long' };
@@ -44,30 +46,51 @@ function Video() {
   }, [id]);
 
   useEffect(() => {
+    // Only run if user is logged in and token exists
+    const token = sessionStorage.getItem('token') || localStorage.getItem('token');
+    if (authStatus !== true || !token) return;
+
     const addToWatchHistory = async () => {
       try {
-        await axios.put(`/api/v1/account/addToHistory/${id}`);
+        await axios.put(
+          `/api/v1/account/addToHistory/${id}`,
+          {},
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
         console.log('addToWatchHistory');
       } catch (error) {
         console.error('Error addToWatchHistory:', error);
       }
     };
     addToWatchHistory();
-  }, [id]);
+  }, [id, authStatus]);
 
   useEffect(() => {
-    if (videoData && videoData.owner) {
-      const fetchUser = async () => {
-        try {
-          const response = await axios.get(`/api/v1/account/userData/${videoData.owner}`);
-          setUserData(response.data.data);
-        } catch (error) {
-          console.error('Error fetching user data:', error);
-        }
-      };
+    const token = sessionStorage.getItem('token') || localStorage.getItem('token');
+    // Only run if user is logged in and token is a non-empty, non-null, non-undefined string
+    if (
+      !videoData ||
+      !videoData.owner ||
+      !token ||
+      token === "undefined" ||
+      token === "null" ||
+      token.trim() === "" ||
+      token.split('.').length !== 3 // JWTs have 3 parts separated by dots
+    ) return;
 
-      fetchUser();
-    }
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(
+          `/api/v1/account/userData/${videoData.owner}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setUserData(response.data.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUser();
   }, [videoData]);
 
   // console.log(userData);

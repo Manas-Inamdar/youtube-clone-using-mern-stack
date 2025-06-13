@@ -25,6 +25,10 @@ function Navbar({ openChange }) {
   };
 
   const handleSignOut = () => {
+    // Clear tokens from storage
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+    // Dispatch logout actionwhat 
     dispatch(logout());
     console.log("Sign out clicked");
   };

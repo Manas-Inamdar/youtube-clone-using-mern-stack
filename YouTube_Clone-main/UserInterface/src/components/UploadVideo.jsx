@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom'
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 function UploadVideo() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -9,6 +10,8 @@ function UploadVideo() {
     const [thumbnail, setThumbnail] = useState(null);
     const [videoFile, setVideoFile] = useState(null);
     const [loader, setLoader] = useState(false)
+
+    const authStatus = useSelector((state) => state.auth.status);
 
     const handleToggleModal = () => {
         setIsModalOpen(!isModalOpen);
@@ -32,6 +35,12 @@ function UploadVideo() {
             return;
         }
 
+        const token = sessionStorage.getItem('token') || localStorage.getItem('token');
+        if (!authStatus || !token) {
+            alert("You must be logged in to upload a video.");
+            return;
+        }
+
         const formData = new FormData();
         formData.append('title', title);
         formData.append('description', description);
@@ -42,7 +51,8 @@ function UploadVideo() {
             setLoader(true)
             const res = await axios.post('/api/v1/videos/publish', formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`
                 }
             });
 

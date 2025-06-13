@@ -5,6 +5,7 @@ import { User } from "../models/account.model.js";
 
 export const verifyJWT = asyncHandler(async (req, _, next) => {
     try {
+        console.log('Protected route hit:', req.originalUrl);
         const token =
             req.cookies?.accessToken ||
             req.header("Authorization")?.replace("Bearer ", "");

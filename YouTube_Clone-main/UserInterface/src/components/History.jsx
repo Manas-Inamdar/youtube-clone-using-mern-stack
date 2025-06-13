@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function History() {
   const [history, setHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const authStatus = useSelector((state) => state.auth.status);
 
   useEffect(() => {
+    const token = sessionStorage.getItem('token') || localStorage.getItem('token');
+    if (!authStatus || !token) {
+      setIsLoading(false);
+      return;
+    }
+
     const fetchHistory = async () => {
       try {
-        const response = await axios.get('/api/v1/account/history', { withCredentials: true });
-        setHistory(response.data.data); // Assuming response.data contains the history array
+        const response = await axios.get('/api/v1/account/history', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setHistory(response.data.data);
       } catch (error) {
         console.error('Error fetching history:', error);
       } finally {
@@ -19,7 +29,7 @@ function History() {
     };
 
     fetchHistory();
-  }, []); // Empty dependency array to run the effect only once
+  }, [authStatus]); // Empty dependency array to run the effect only once
 
   //  console.log(history[0]._id);
 

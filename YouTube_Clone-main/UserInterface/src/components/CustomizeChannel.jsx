@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 function CustomizeChannel() {
   const data = useSelector((state) => state.auth.user);
+  const authStatus = useSelector((state) => state.auth.status);
   const history = useNavigate();
 
   const [userdata, setUserData] = useState(null);
@@ -45,6 +46,12 @@ function CustomizeChannel() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
+    const token = sessionStorage.getItem('token') || localStorage.getItem('token');
+    if (!authStatus || !token) {
+      alert("You must be logged in to update your channel.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append('name', name);
     formData.append('email', email);
@@ -59,7 +66,8 @@ function CustomizeChannel() {
       setLoader(true);
       const res = await axios.put(`/api/v1/account/update/${userdata._id}`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
         }
       });
       setLoader(false);

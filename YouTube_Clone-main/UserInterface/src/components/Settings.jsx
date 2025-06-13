@@ -9,6 +9,7 @@ function Settings() {
 
     const [loader, setLoader] = useState(false)
     const userdata = useSelector((state) => state.auth.user);
+    const authStatus = useSelector((state) => state.auth.status);
 
     const history = useNavigate()
 
@@ -16,24 +17,30 @@ function Settings() {
          
         const  value = confirm("Are you sure ?");
 
-        if (value) {
+        if (!value) return;
 
-            
-            try {
-                setLoader(true)
-                const res = await axios.delete(`/api/v1/account/delete/${userdata._id}`)
-                setLoader(false)
-                alert("Your channel is deleted !");
-                history("/signup");
-                
-            } catch (error) {
+        const token = sessionStorage.getItem('token') || localStorage.getItem('token');
+        if (!authStatus || !token) {
+            alert("You must be logged in to delete your channel.");
+            return;
+        }
 
-                console.log("Channel delete error :",error);
-                alert(error);
-                
-            }
+        try {
+            setLoader(true)
+            const res = await axios.delete(`/api/v1/account/delete/${userdata._id}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+            setLoader(false)
+            alert("Your channel is deleted !");
+            history("/signup");
             
-        }  
+        } catch (error) {
+            setLoader(false);
+            console.log("Channel delete error :",error);
+            alert(error);
+            
+        }
+            
     }
   return (
     loader ?  

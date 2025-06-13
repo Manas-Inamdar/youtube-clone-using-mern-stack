@@ -5,27 +5,26 @@ import { useSelector } from 'react-redux';
 import axios from "axios";
 
 function YourChannel() {
+  const data = useSelector((state) => state.auth.user);
+  const authStatus = useSelector((state) => state.auth.status);
+  const [userdata, setUserData] = useState();
 
-  
-  const  data = useSelector((state) => state.auth.user);
-  // console.log(data._id);
-
-  const [userdata , setUserData]  = useState();
-  
   useEffect(() => {
-      if (data._id) {
-          const fetchUser = async () => {
-              try {
-                  const response = await axios.get(`/api/v1/account/userData/${data._id}`);
-                  setUserData(response.data.data);
-                } catch (error) {
-                    console.error('Error fetching user data:', error);
-                  }
-                };
-            
-                fetchUser();
-              }
-    }, [data._id]);
+    const token = sessionStorage.getItem('token') || localStorage.getItem('token');
+    if (!authStatus || !token || !data._id) return;
+
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`/api/v1/account/userData/${data._id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setUserData(response.data.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    fetchUser();
+  }, [authStatus, data._id]);
             
     // console.log(userdata);
 

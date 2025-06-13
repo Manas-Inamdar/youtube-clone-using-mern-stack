@@ -62,11 +62,7 @@ function Routing() {
                                 <Shorts />
                             </AuthLayout>
                         } />
-                        <Route path='watch/:id' element={
-                            <AuthLayout>
-                                <Video />
-                            </AuthLayout>
-                        } />
+                        <Route path='watch/:id' element={<Video />} />
                         <Route path='customize_channel' element={
                             <AuthLayout>
                                 <CustomizeChannel />
