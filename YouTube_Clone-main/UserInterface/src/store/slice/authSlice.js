@@ -12,7 +12,10 @@ const initialState = {
 
 export const register = createAsyncThunk('/api/v1/account/signup', async (userData, { rejectWithValue }) => {
     try {
-        const response = await axios.post('/api/v1/account/signup', userData);
+        const response = await axios.post(
+            `${process.env.REACT_APP_API_URL}/api/v1/account/signup`,
+            userData
+        );
         return response.data.data;
     } catch (error) {
         return rejectWithValue(error.response?.data?.message || error.message);
@@ -21,7 +24,10 @@ export const register = createAsyncThunk('/api/v1/account/signup', async (userDa
 
 export const login = createAsyncThunk('/api/v1/account/login', async (userData, { rejectWithValue }) => {
     try {
-        const response = await axios.post('/api/v1/account/login', userData);
+        const response = await axios.post(
+            `${process.env.REACT_APP_API_URL}/api/v1/account/login`,
+            userData
+        );
         return response.data.data;
     } catch (error) {
         return rejectWithValue(error.response?.data?.message || error.message);
@@ -30,7 +36,7 @@ export const login = createAsyncThunk('/api/v1/account/login', async (userData, 
 
 export const logout = createAsyncThunk('/api/v1/account/logout', async (_, { rejectWithValue }) => {
     try {
-        await axios.post('/api/v1/account/logout');
+        await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/account/logout`);
         return true;
     } catch (error) {
         return rejectWithValue(error.response?.data?.message || error.message);

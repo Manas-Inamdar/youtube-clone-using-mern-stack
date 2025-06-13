@@ -16,7 +16,11 @@ function Search() {
     if (!searchTerm) return;
     setLoading(true);
     axios
-      .get(`/api/v1/videos/search?q=${encodeURIComponent(searchTerm)}`)
+      .get(
+        `${process.env.REACT_APP_API_URL}/api/v1/videos/search?q=${encodeURIComponent(
+          searchTerm
+        )}`
+      )
       .then((res) => {
         setResults(res.data.data || []);
         setLoading(false);

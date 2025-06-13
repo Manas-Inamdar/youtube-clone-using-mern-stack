@@ -49,12 +49,16 @@ function UploadVideo() {
 
         try {
             setLoader(true)
-            const res = await axios.post('/api/v1/videos/publish', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${token}`
+            const res = await axios.post(
+                `${process.env.REACT_APP_API_URL}/api/v1/videos/publish`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${token}`
+                    }
                 }
-            });
+            );
 
             alert("Successfully Video Uploaded");
             setLoader(false)

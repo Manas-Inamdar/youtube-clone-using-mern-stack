@@ -37,17 +37,17 @@ function Navbar({ openChange }) {
   const  data = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    if (!data?._id) return;
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(`/api/v1/account/userData/${data._id}`);
-        setUserData(response.data.data);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-    fetchUser();
-  }, [data]);
+        if (!data?._id) return;
+        const fetchUser = async () => {
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/account/userData/${data._id}`);
+                setUserData(response.data.data);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+        fetchUser();
+    }, [data]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();

@@ -9,7 +9,7 @@ function Main() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('/api/v1/videos/allVideo')
+    axios.get(`${process.env.REACT_APP_API_URL}/api/v1/videos/allVideo`)
       .then(res => {
         setVideos(res.data.data || []);
         setLoading(false);

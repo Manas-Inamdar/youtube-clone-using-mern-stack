@@ -27,9 +27,12 @@ function Settings() {
 
         try {
             setLoader(true)
-            const res = await axios.delete(`/api/v1/account/delete/${userdata._id}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            })
+            const res = await axios.delete(
+                `${process.env.REACT_APP_API_URL}/api/v1/account/delete/${userdata._id}`,
+                {
+                    headers: { Authorization: `Bearer ${token}` }
+                }
+            )
             setLoader(false)
             alert("Your channel is deleted !");
             history("/signup");

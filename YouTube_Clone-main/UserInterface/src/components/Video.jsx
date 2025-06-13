@@ -22,7 +22,7 @@ function Video() {
   useEffect(() => {
     const fetchVideoData = async () => {
       try {
-        const response = await axios.get(`/api/v1/videos/videoData/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/videos/videoData/${id}`);
         setVideoData(response.data.data);
       } catch (error) {
         setError(error.message);
@@ -37,7 +37,7 @@ function Video() {
   useEffect(() => {
     const incrementViewCount = async () => {
       try {
-        await axios.put(`/api/v1/videos/incrementView/${id}`);
+        await axios.put(`${process.env.REACT_APP_API_URL}/api/v1/videos/incrementView/${id}`);
         console.log('View count incremented');
       } catch (error) {
         console.error('Error incrementing view count:', error);
@@ -54,7 +54,7 @@ function Video() {
     const addToWatchHistory = async () => {
       try {
         await axios.put(
-          `/api/v1/account/addToHistory/${id}`,
+          `${process.env.REACT_APP_API_URL}/api/v1/account/addToHistory/${id}`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -67,24 +67,12 @@ function Video() {
   }, [id, authStatus]);
 
   useEffect(() => {
-    const token = sessionStorage.getItem('token') || localStorage.getItem('token');
-    // Only run if user is logged in and token is a non-empty, non-null, non-undefined string
-    if (
-      !videoData ||
-      !videoData.owner ||
-      !token ||
-      token === "undefined" ||
-      token === "null" ||
-      token.trim() === "" ||
-      token.split('.').length !== 3 // JWTs have 3 parts separated by dots
-    ) return;
+    if (!videoData || !videoData.owner) return;
 
     const fetchUser = async () => {
       try {
-        const response = await axios.get(
-          `/api/v1/account/userData/${videoData.owner}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        // No Authorization header needed for public route
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/account/userData/${videoData.owner}`);
         setUserData(response.data.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -115,7 +103,7 @@ function Video() {
     }
     try {
       const res = await axios.put(
-        `/api/v1/videos/like/${id}`,
+        `${process.env.REACT_APP_API_URL}/api/v1/videos/like/${id}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

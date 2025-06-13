@@ -10,7 +10,7 @@ function Home() {
     const fetchVideos = async () => {
       try {
         // setLoader(true)
-        const response = await axios.get('/api/v1/videos/allVideo');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/videos/allVideo`);
         // setLoader(false)
         setVideos(response.data.data);
       } catch (error) {

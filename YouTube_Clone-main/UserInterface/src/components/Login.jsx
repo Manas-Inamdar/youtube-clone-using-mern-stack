@@ -22,11 +22,17 @@ function Login() {
 
         try {
             setLoader(true);
-            await dispatch(login(formData)).unwrap();
+            const result = await dispatch(login(formData)).unwrap();
             setError('');
             setLoader(false);
-            // alert("login successful");
-            // navigate('/your_channel');
+
+            // Save token to storage
+            if (result && result.accessToken) {
+                localStorage.setItem('token', result.accessToken);
+                // Or use sessionStorage if you prefer
+                // sessionStorage.setItem('token', result.accessToken);
+            }
+
             navigate('/home');
         } catch (err) {
             setError(err.message || 'An error occurred.');
