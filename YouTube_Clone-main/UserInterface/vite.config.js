@@ -10,6 +10,7 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/v1/, '/api/v1') // Corrected rewrite function
       }
-    }
+    },
+    historyApiFallback: true, // <-- Add this line
   }
 });
